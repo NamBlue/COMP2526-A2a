@@ -17,7 +17,8 @@ import javax.swing.JPanel;
 public class Cell extends JPanel {
     private final int row;
     private final int col;
-    private Inhabitants object;
+    private final World world;
+    private Inhabitant object;
     
     /**
      * Constructor for objects of type Cell.
@@ -25,12 +26,17 @@ public class Cell extends JPanel {
      * @param row the row position of the Cell
      * @param col the column position of the Cell
      */
-    public Cell(int row, int col) {
+    public Cell(World world, int row, int col) {
+        this.world = world;
         this.row = row;
         this.col = col;
         setLayout(new GridLayout(1, 1));
     }
     
+    /**
+     * Initializes the Cell and places its inhabitants in the world
+     * randomly using the RandomGenerator.
+     */
     public void init() {
         int seed = RandomGenerator.nextNumber(100);
         if (seed < 10) {
@@ -44,17 +50,31 @@ public class Cell extends JPanel {
         }
     }
     
+    /**
+     * Draws the cell.
+     * @param draw device context for the window to draw on
+     */
     public void paintComponent(Graphics draw) {
         draw.setColor(Color.lightGray);
-        draw.fillRect(0, 0, getWidth() -1, getHeight() -1);
+        draw.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
     }
     
+    /**
+     * Draws the cell.
+     * @return the Point object of the location of the cell.
+     */
     public Point getLocation() {
         Point location = new Point(row, col);
         return (location);
     }
     
-    public Cell getAdjacentCells() {
-        return new Cell(0,0);
+    /**
+     * Returns all adjacent cells.
+     * @return the 2D Cell array of adjacent cells.
+     */
+    public Cell[][] getAdjacentCells() {
+        Cell[][] cell = new Cell[3][3];
+        world.getCellAt(1, 1);
+        return cell;
     }
 }

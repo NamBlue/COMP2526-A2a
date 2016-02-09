@@ -25,20 +25,19 @@ public class World {
     }
     
     /**
-     * Initializes the World and puts the Cells on the world and adds the 
-     * appropriate number of Herbivores and Plants.
+     * Initializes the World and puts the Cells on the world.
      */
     public void init() {
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                map[row][col] = new Cell(row, col);
+                map[row][col] = new Cell(this, row, col);
                 map[row][col].init();
             }
         }
     }
     
     /**
-     * Moves time within the World by one turn.
+     * Advances time within the World by one turn.
      */
     public void takeTurn() {
         System.out.println("Works!");
@@ -60,6 +59,12 @@ public class World {
         return cols;
     }
     
+    /**
+     * Returns the Cell with the location specified.
+     * @param row the row of the Cell
+     * @param col the column of the Cell
+     * @return the Cell at that location.
+     */
     public Cell getCellAt(int row, int col) {
         return map[row][col];
     }

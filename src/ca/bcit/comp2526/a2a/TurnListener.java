@@ -23,6 +23,7 @@ public class TurnListener extends MouseAdapter{
     
     /**
      * Moves time within the World by one turn with each mouse click.
+     * @param click the mouse click event to listen to.
      */
     public void mouseClicked(MouseEvent click) {
         gameframe.takeTurn();
