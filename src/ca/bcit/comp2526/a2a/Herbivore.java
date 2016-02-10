@@ -44,6 +44,14 @@ public class Herbivore extends JPanel implements Inhabitant {
      * Herbivore eats the Plant when on the same cell as the plant.
      * Resets its hunger back to 0(full stomach).
      */
+    public void move() {
+        System.out.println("Moo!");
+    }
+    
+    /**
+     * Herbivore eats the Plant when on the same cell as the plant.
+     * Resets its hunger back to 0(full stomach).
+     */
     public void eat() {
         hunger = 0;
     }
@@ -62,6 +70,6 @@ public class Herbivore extends JPanel implements Inhabitant {
      */
     public void paintComponent(Graphics draw) {
         draw.setColor(Color.yellow);
-        draw.fillRect(0, 0, getWidth() -1 ,getHeight() -1);
+        draw.fillRect(0, 0, getWidth() - 1 ,getHeight() - 1);
     }
 }

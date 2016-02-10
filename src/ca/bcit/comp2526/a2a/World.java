@@ -40,7 +40,11 @@ public class World {
      * Advances time within the World by one turn.
      */
     public void takeTurn() {
-        System.out.println("Works!");
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                map[row][col].takeTurn();
+            }
+        }
     }
     
     /**

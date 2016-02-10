@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Point;
-
 import javax.swing.JPanel;
 
 /**
@@ -18,7 +17,8 @@ public class Cell extends JPanel {
     private final int row;
     private final int col;
     private final World world;
-    private Inhabitant object;
+    private Inhabitant inhabitant;
+    private Cell[][] cell = new Cell[3][3];
     
     /**
      * Constructor for objects of type Cell.
@@ -40,13 +40,22 @@ public class Cell extends JPanel {
     public void init() {
         int seed = RandomGenerator.nextNumber(100);
         if (seed < 10) {
-            object = new Herbivore(this);
-            object.init();
+            inhabitant = new Herbivore(this);
+            inhabitant.init();
         } else if (seed < 40) {
-            object = new Plant(this);
-            object.init();
+            inhabitant = new Plant(this);
+            inhabitant.init();
         } else {
-            object = null;
+            inhabitant = null;
+        }
+    }
+    
+    /**
+     * Advances time within the Cell by one turn.
+     */
+    public void takeTurn() {
+        if (inhabitant instanceof Herbivore) {
+            ((Herbivore)inhabitant).move();
         }
     }
     
@@ -60,7 +69,7 @@ public class Cell extends JPanel {
     }
     
     /**
-     * Draws the cell.
+     * Returns the location of the cell as a Pointer object.
      * @return the Point object of the location of the cell.
      */
     public Point getLocation() {
@@ -69,12 +78,91 @@ public class Cell extends JPanel {
     }
     
     /**
-     * Returns all adjacent cells.
+     * Returns all adjacent cells in a 2D array, null = no Cell. Cell[1][1]
+     * is always null as it is its own Cell.
      * @return the 2D Cell array of adjacent cells.
      */
     public Cell[][] getAdjacentCells() {
-        Cell[][] cell = new Cell[3][3];
-        world.getCellAt(1, 1);
+        int rows = world.getRowCount();
+        int cols = world.getColumnCount();
+
+        checkCornerCells(rows, cols);
+        checkOtherCells(rows, cols);
         return cell;
+    }
+    
+    /**
+     * Support method for getAdjacentCells, checks and stores
+     * the Cells adjacent to the corner Cells.
+     * @param rows the maximum rows in this world
+     * @param cols the maximum columns in this world
+     */
+    private void checkCornerCells(int rows, int cols) {
+        /* Map of 2D array for reference in y,x index format
+         * 00   01     02
+         * 10   CELL   12
+         * 20   21     22
+         */
+        if (row == 0 && col == 0) { //Top left
+            cell[1][2] = world.getCellAt(row, col + 1);
+            cell[2][2] = world.getCellAt(row + 1, col + 1);
+            cell[2][1] = world.getCellAt(row + 1, col);
+        } else if (row == 0 && col == cols) { //Top right
+            cell[1][0] = world.getCellAt(row, col - 1);
+            cell[2][0] = world.getCellAt(row + 1, col - 1);
+            cell[2][1] = world.getCellAt(row + 1, col);
+        } else if (row == rows && col == 0) { //Bottom left
+            cell[0][1] = world.getCellAt(row - 1, col);
+            cell[0][2] = world.getCellAt(row - 1 , col + 1);
+            cell[1][2] = world.getCellAt(row, col + 1);
+        } else if (row == rows && col == cols) { //Bottom right
+            cell[0][1] = world.getCellAt(row - 1, col);
+            cell[0][0] = world.getCellAt(row - 1 , col - 1);
+            cell[1][0] = world.getCellAt(row, col - 1);
+        }
+    }
+    
+    /**
+     * Support method for getAdjacentCells, checks and stores
+     * the Cells adjacent to the side Cells and all other Cells.
+     * @param rows the maximum rows in this world
+     * @param cols the maximum columns in this world
+     */
+    private void checkOtherCells(int rows, int cols) {
+        if (row == 0 && (col > 0 && col < cols)) { //Top side
+            cell[1][2] = world.getCellAt(row, col + 1);
+            cell[2][2] = world.getCellAt(row + 1, col + 1);
+            cell[2][1] = world.getCellAt(row + 1, col);
+            cell[2][0] = world.getCellAt(row + 1, col - 1);
+            cell[1][0] = world.getCellAt(row, col - 1);
+        } else if (row == 0 && (col > 0 && col < cols)) { //Right side
+            cell[0][1] = world.getCellAt(row - 1, col);
+            cell[2][1] = world.getCellAt(row + 1, col);
+            cell[2][0] = world.getCellAt(row + 1, col - 1);
+            cell[1][0] = world.getCellAt(row, col - 1);
+            cell[0][0] = world.getCellAt(row - 1, col - 1);
+        } else if (row == 0 && (col > 0 && col < cols)) { //Bottom side
+            cell[0][1] = world.getCellAt(row - 1, col);
+            cell[0][2] = world.getCellAt(row - 1, col + 1);
+            cell[1][2] = world.getCellAt(row, col + 1);
+            cell[1][0] = world.getCellAt(row, col - 1);
+            cell[0][0] = world.getCellAt(row - 1, col - 1);
+        } else if ((row > 0 && row < rows) && col == 0) { //Left side
+            cell[0][1] = world.getCellAt(row - 1, col);
+            cell[0][2] = world.getCellAt(row - 1, col + 1);
+            cell[1][2] = world.getCellAt(row, col + 1);
+            cell[2][2] = world.getCellAt(row + 1, col + 1);
+            cell[2][1] = world.getCellAt(row + 1, col);
+        } else { //All other cells
+            cell[0][1] = world.getCellAt(row - 1, col);
+            cell[0][2] = world.getCellAt(row - 1, col + 1);
+            cell[1][2] = world.getCellAt(row, col + 1);
+            cell[1][0] = world.getCellAt(row, col - 1);
+            cell[2][2] = world.getCellAt(row + 1, col + 1);
+            cell[2][1] = world.getCellAt(row + 1, col);
+            cell[2][0] = world.getCellAt(row + 1, col - 1);
+            cell[1][0] = world.getCellAt(row, col - 1);
+            cell[0][0] = world.getCellAt(row - 1, col - 1);
+        }
     }
 }
