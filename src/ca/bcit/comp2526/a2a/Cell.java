@@ -18,7 +18,7 @@ public class Cell extends JPanel {
     private final int col;
     private final World world;
     private Inhabitant inhabitant;
-    private Cell[][] cell = new Cell[3][3];
+    private final Cell[][] cell = new Cell[3][3];
     
     /**
      * Constructor for objects of type Cell.
@@ -34,11 +34,14 @@ public class Cell extends JPanel {
     }
     
     /**
-     * Initializes the Cell and places its inhabitants in the world
-     * randomly using the RandomGenerator.
+     * Initializes the Cell and places the inhabitant on the Cell
+     * randomly using the RandomGenerator class. Checks and stores adjacent Cells.
      */
     public void init() {
         int seed = RandomGenerator.nextNumber(100);
+        int rows = world.getRowCount() - 1;
+        int cols = world.getColumnCount() - 1;
+
         if (seed < 10) {
             inhabitant = new Herbivore(this);
             inhabitant.init();
@@ -48,6 +51,10 @@ public class Cell extends JPanel {
         } else {
             inhabitant = null;
         }
+        
+        checkCornerCells(rows, cols);
+        checkSideCells(rows, cols);
+        checkOtherCells(rows, cols);
     }
     
     /**
@@ -69,6 +76,34 @@ public class Cell extends JPanel {
     }
     
     /**
+     * Sets the Inhabitant to this Cell.
+     * @param object the Inhabitant to set
+     */
+    public void setInhabitant(Inhabitant object) {
+        inhabitant = object;
+        add((JPanel)object);
+    }
+    
+    /**
+     * Removes the Inhabitant of this Cell.
+     * @param object the Inhabitant to remove
+     */
+    public void removeInhabitant(Inhabitant object) {
+        if (inhabitant != null) {
+            inhabitant = null;
+            remove((JPanel)object);
+        }
+    }
+    
+    /**
+     * Returns the current Inhabitant of the Cell.
+     * @return the Inhabitant of the Cell
+     */
+    public Inhabitant getInhabitant() {
+        return inhabitant;
+    }
+    
+    /**
      * Returns the location of the cell as a Pointer object.
      * @return the Point object of the location of the cell.
      */
@@ -78,21 +113,16 @@ public class Cell extends JPanel {
     }
     
     /**
-     * Returns all adjacent cells in a 2D array, null = no Cell. Cell[1][1]
-     * is always null as it is its own Cell.
+     * Returns all adjacent cells in a 2D array, null = no Cell. 
+     * Cell[1][1] is always null as it is its own Cell.
      * @return the 2D Cell array of adjacent cells.
      */
     public Cell[][] getAdjacentCells() {
-        int rows = world.getRowCount();
-        int cols = world.getColumnCount();
-
-        checkCornerCells(rows, cols);
-        checkOtherCells(rows, cols);
         return cell;
     }
     
     /**
-     * Support method for getAdjacentCells, checks and stores
+     * Support method for init, checks and stores
      * the Cells adjacent to the corner Cells.
      * @param rows the maximum rows in this world
      * @param cols the maximum columns in this world
@@ -123,25 +153,25 @@ public class Cell extends JPanel {
     }
     
     /**
-     * Support method for getAdjacentCells, checks and stores
-     * the Cells adjacent to the side Cells and all other Cells.
+     * Support method for init, checks and stores
+     * the Cells adjacent to the side Cells.
      * @param rows the maximum rows in this world
      * @param cols the maximum columns in this world
      */
-    private void checkOtherCells(int rows, int cols) {
+    private void checkSideCells(int rows, int cols) {
         if (row == 0 && (col > 0 && col < cols)) { //Top side
             cell[1][2] = world.getCellAt(row, col + 1);
             cell[2][2] = world.getCellAt(row + 1, col + 1);
             cell[2][1] = world.getCellAt(row + 1, col);
             cell[2][0] = world.getCellAt(row + 1, col - 1);
             cell[1][0] = world.getCellAt(row, col - 1);
-        } else if (row == 0 && (col > 0 && col < cols)) { //Right side
+        } else if ((row > 0 && row < rows) && col == cols) { //Right side
             cell[0][1] = world.getCellAt(row - 1, col);
             cell[2][1] = world.getCellAt(row + 1, col);
             cell[2][0] = world.getCellAt(row + 1, col - 1);
             cell[1][0] = world.getCellAt(row, col - 1);
             cell[0][0] = world.getCellAt(row - 1, col - 1);
-        } else if (row == 0 && (col > 0 && col < cols)) { //Bottom side
+        } else if (row == rows && (col > 0 && col < cols)) { //Bottom side
             cell[0][1] = world.getCellAt(row - 1, col);
             cell[0][2] = world.getCellAt(row - 1, col + 1);
             cell[1][2] = world.getCellAt(row, col + 1);
@@ -153,11 +183,20 @@ public class Cell extends JPanel {
             cell[1][2] = world.getCellAt(row, col + 1);
             cell[2][2] = world.getCellAt(row + 1, col + 1);
             cell[2][1] = world.getCellAt(row + 1, col);
-        } else { //All other cells
+        }
+    }
+    
+    /**
+     * Support method for init, checks and stores
+     * the Cells adjacent to all other Cells not in the corner or sides.
+     * @param rows the maximum rows in this world
+     * @param cols the maximum columns in this world
+     */
+    private void checkOtherCells(int rows, int cols) {
+        if ((row > 0 && row < rows) && (col > 0 && col < cols)) {
             cell[0][1] = world.getCellAt(row - 1, col);
             cell[0][2] = world.getCellAt(row - 1, col + 1);
             cell[1][2] = world.getCellAt(row, col + 1);
-            cell[1][0] = world.getCellAt(row, col - 1);
             cell[2][2] = world.getCellAt(row + 1, col + 1);
             cell[2][1] = world.getCellAt(row + 1, col);
             cell[2][0] = world.getCellAt(row + 1, col - 1);

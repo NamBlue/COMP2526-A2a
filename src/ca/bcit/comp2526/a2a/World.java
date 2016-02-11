@@ -25,12 +25,16 @@ public class World {
     }
     
     /**
-     * Initializes the World and puts the Cells on the world.
+     * Places the Cells on the World then initializes them.
      */
     public void init() {
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 map[row][col] = new Cell(this, row, col);
+            }
+        }
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
                 map[row][col].init();
             }
         }
@@ -43,6 +47,7 @@ public class World {
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 map[row][col].takeTurn();
+                map[row][col].getAdjacentCells();
             }
         }
     }

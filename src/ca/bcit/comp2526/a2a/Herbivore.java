@@ -45,7 +45,12 @@ public class Herbivore extends JPanel implements Inhabitant {
      * Resets its hunger back to 0(full stomach).
      */
     public void move() {
-        System.out.println("Moo!");
+        Cell[][] cells = cell.getAdjacentCells();
+        cell.removeInhabitant(this);
+        if (cells[0][1] != null) {
+            cells[0][1].removeInhabitant(cells[0][1].getInhabitant());
+            cells[0][1].setInhabitant(this);
+        }
     }
     
     /**
