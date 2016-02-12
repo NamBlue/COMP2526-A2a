@@ -45,11 +45,46 @@ public class Herbivore extends JPanel implements Inhabitant {
      * Resets its hunger back to 0(full stomach).
      */
     public void move() {
+        /* Map of 2D array for reference in y,x index format
+         * 00   01     02
+         * 10   CELL   12
+         * 20   21     22
+         */
+        int direction;
+        int y = 1;
+        int x = 1;
         Cell[][] cells = cell.getAdjacentCells();
-        cell.removeInhabitant(this);
-        if (cells[0][1] != null) {
-            cells[0][1].removeInhabitant(cells[0][1].getInhabitant());
-            cells[0][1].setInhabitant(this);
+        direction = RandomGenerator.nextNumber(79);
+        if (direction < 10) { //moves north
+            y = 0;
+            x = 1;
+        } else if (direction < 20) { //moves north east
+            y = 0;
+            x = 2;
+        } else if (direction < 30) { //moves east
+            y = 1;
+            x = 2;
+        } else if (direction < 40) { //moves south east
+            y = 2;
+            x = 2;
+        } else if (direction < 50) { //moves south
+            y = 2;
+            x = 1;
+        } else if (direction < 60) { //moves south west
+            y = 2;
+            x = 0;
+        } else if (direction < 70) { //moves west
+            y = 1;
+            x = 0;
+        } else if (direction < 80) { //moves north west
+            y = 0;
+            x = 0;
+        }
+        if (cells[y][x] != null) {
+            cell.removeInhabitant(this);
+            cells[y][x].removeInhabitant(cells[y][x].getInhabitant());
+            cells[y][x].setInhabitant(this);
+            cell = cells[y][x];
         }
     }
     
