@@ -44,10 +44,10 @@ public class Cell extends JPanel {
         int seed = RandomGenerator.nextNumber(100);
         int rows = world.getRowCount() - 1;
         int cols = world.getColumnCount() - 1;
-        final int two = 2;
+        final int ten = 10;
         final int forty = 40;
 
-        if (seed < two) {
+        if (seed < ten) {
             inhabitant = new Herbivore(this);
             inhabitant.init();
         } else if (seed < forty) {
