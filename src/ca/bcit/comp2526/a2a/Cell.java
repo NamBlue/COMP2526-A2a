@@ -68,7 +68,7 @@ public class Cell extends JPanel {
     
     /**
      * Draws the cell.
-     * @param draw device context for the window to draw on
+     * @param draw device context for the Panel to draw on
      */
     public void paintComponent(Graphics draw) {
         draw.setColor(Color.lightGray);

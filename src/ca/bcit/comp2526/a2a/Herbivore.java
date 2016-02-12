@@ -50,7 +50,7 @@ public class Herbivore extends JPanel implements Inhabitant {
     }
     
     /**
-     * Herbivore moves if space is unoccupied.
+     * Herbivore moves if space is unoccupied or moves to a Plant and eats.
      */
     private void move() {
         /* Map of 2D array for reference in y,x index format
@@ -128,7 +128,7 @@ public class Herbivore extends JPanel implements Inhabitant {
     
     /**
      * Draws the Herbivore.
-     * @param draw device context for the window to draw on
+     * @param draw device context for the Panel to draw on
      */
     public void paintComponent(Graphics draw) {
         draw.setColor(Color.yellow);
