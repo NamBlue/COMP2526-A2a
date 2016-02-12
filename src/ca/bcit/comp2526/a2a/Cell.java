@@ -18,7 +18,7 @@ public class Cell extends JPanel {
     private final int col;
     private final World world;
     private Inhabitant inhabitant;
-    private final Cell[][] cell = new Cell[3][3];
+    private final Cell[][] cell;
     
     /**
      * Constructor for objects of type Cell.
@@ -27,9 +27,12 @@ public class Cell extends JPanel {
      * @param col the column position of the Cell
      */
     public Cell(World world, int row, int col) {
+        final int three = 3;
+        
         this.world = world;
         this.row = row;
         this.col = col;
+        cell = new Cell[three][three];
         setLayout(new GridLayout(1, 1));
     }
     
@@ -41,11 +44,13 @@ public class Cell extends JPanel {
         int seed = RandomGenerator.nextNumber(100);
         int rows = world.getRowCount() - 1;
         int cols = world.getColumnCount() - 1;
+        final int two = 2;
+        final int forty = 40;
 
-        if (seed < 10) {
+        if (seed < two) {
             inhabitant = new Herbivore(this);
             inhabitant.init();
-        } else if (seed < 40) {
+        } else if (seed < forty) {
             inhabitant = new Plant(this);
             inhabitant.init();
         } else {
@@ -138,23 +143,25 @@ public class Cell extends JPanel {
      * @param cols the maximum columns in this world
      */
     private void checkCornerCells(int rows, int cols) {
+        final int two = 2;
+        
         /* Map of 2D array for reference in y,x index format
          * 00   01     02
          * 10   CELL   12
          * 20   21     22
          */
         if (row == 0 && col == 0) { //Top left
-            cell[1][2] = world.getCellAt(row, col + 1);
-            cell[2][2] = world.getCellAt(row + 1, col + 1);
-            cell[2][1] = world.getCellAt(row + 1, col);
+            cell[1][two] = world.getCellAt(row, col + 1);
+            cell[two][two] = world.getCellAt(row + 1, col + 1);
+            cell[two][1] = world.getCellAt(row + 1, col);
         } else if (row == 0 && col == cols) { //Top right
             cell[1][0] = world.getCellAt(row, col - 1);
-            cell[2][0] = world.getCellAt(row + 1, col - 1);
-            cell[2][1] = world.getCellAt(row + 1, col);
+            cell[two][0] = world.getCellAt(row + 1, col - 1);
+            cell[two][1] = world.getCellAt(row + 1, col);
         } else if (row == rows && col == 0) { //Bottom left
             cell[0][1] = world.getCellAt(row - 1, col);
-            cell[0][2] = world.getCellAt(row - 1 , col + 1);
-            cell[1][2] = world.getCellAt(row, col + 1);
+            cell[0][two] = world.getCellAt(row - 1 , col + 1);
+            cell[1][two] = world.getCellAt(row, col + 1);
         } else if (row == rows && col == cols) { //Bottom right
             cell[0][1] = world.getCellAt(row - 1, col);
             cell[0][0] = world.getCellAt(row - 1 , col - 1);
@@ -169,30 +176,32 @@ public class Cell extends JPanel {
      * @param cols the maximum columns in this world
      */
     private void checkSideCells(int rows, int cols) {
+        final int two = 2;
+        
         if (row == 0 && (col > 0 && col < cols)) { //Top side
-            cell[1][2] = world.getCellAt(row, col + 1);
-            cell[2][2] = world.getCellAt(row + 1, col + 1);
-            cell[2][1] = world.getCellAt(row + 1, col);
-            cell[2][0] = world.getCellAt(row + 1, col - 1);
+            cell[1][two] = world.getCellAt(row, col + 1);
+            cell[two][two] = world.getCellAt(row + 1, col + 1);
+            cell[two][1] = world.getCellAt(row + 1, col);
+            cell[two][0] = world.getCellAt(row + 1, col - 1);
             cell[1][0] = world.getCellAt(row, col - 1);
         } else if ((row > 0 && row < rows) && col == cols) { //Right side
             cell[0][1] = world.getCellAt(row - 1, col);
-            cell[2][1] = world.getCellAt(row + 1, col);
-            cell[2][0] = world.getCellAt(row + 1, col - 1);
+            cell[two][1] = world.getCellAt(row + 1, col);
+            cell[two][0] = world.getCellAt(row + 1, col - 1);
             cell[1][0] = world.getCellAt(row, col - 1);
             cell[0][0] = world.getCellAt(row - 1, col - 1);
         } else if (row == rows && (col > 0 && col < cols)) { //Bottom side
             cell[0][1] = world.getCellAt(row - 1, col);
-            cell[0][2] = world.getCellAt(row - 1, col + 1);
-            cell[1][2] = world.getCellAt(row, col + 1);
+            cell[0][two] = world.getCellAt(row - 1, col + 1);
+            cell[1][two] = world.getCellAt(row, col + 1);
             cell[1][0] = world.getCellAt(row, col - 1);
             cell[0][0] = world.getCellAt(row - 1, col - 1);
         } else if ((row > 0 && row < rows) && col == 0) { //Left side
             cell[0][1] = world.getCellAt(row - 1, col);
-            cell[0][2] = world.getCellAt(row - 1, col + 1);
-            cell[1][2] = world.getCellAt(row, col + 1);
-            cell[2][2] = world.getCellAt(row + 1, col + 1);
-            cell[2][1] = world.getCellAt(row + 1, col);
+            cell[0][two] = world.getCellAt(row - 1, col + 1);
+            cell[1][two] = world.getCellAt(row, col + 1);
+            cell[two][two] = world.getCellAt(row + 1, col + 1);
+            cell[two][1] = world.getCellAt(row + 1, col);
         }
     }
     
@@ -203,13 +212,15 @@ public class Cell extends JPanel {
      * @param cols the maximum columns in this world
      */
     private void checkOtherCells(int rows, int cols) {
+        final int two = 2;
+        
         if ((row > 0 && row < rows) && (col > 0 && col < cols)) {
             cell[0][1] = world.getCellAt(row - 1, col);
-            cell[0][2] = world.getCellAt(row - 1, col + 1);
-            cell[1][2] = world.getCellAt(row, col + 1);
-            cell[2][2] = world.getCellAt(row + 1, col + 1);
-            cell[2][1] = world.getCellAt(row + 1, col);
-            cell[2][0] = world.getCellAt(row + 1, col - 1);
+            cell[0][two] = world.getCellAt(row - 1, col + 1);
+            cell[1][two] = world.getCellAt(row, col + 1);
+            cell[two][two] = world.getCellAt(row + 1, col + 1);
+            cell[two][1] = world.getCellAt(row + 1, col);
+            cell[two][0] = world.getCellAt(row + 1, col - 1);
             cell[1][0] = world.getCellAt(row, col - 1);
             cell[0][0] = world.getCellAt(row - 1, col - 1);
         }

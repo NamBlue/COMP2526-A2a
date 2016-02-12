@@ -47,6 +47,7 @@ public class World {
      * Advances time within the World by one turn.
      */
     public void takeTurn() {
+        final int hundred = 100;
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 map[row][col].takeTurn();
@@ -57,7 +58,7 @@ public class World {
                 map[row][col].resetTurn();
             }
         }
-        time += 100;
+        time += hundred;
         System.out.println("This is year " + time + " AD");
     }
     

@@ -47,8 +47,10 @@ public class Herbivore extends JPanel implements Inhabitant {
      * Herbivore takes its turn.
      */
     public void takeTurn() {
+        final int five = 5;
+        
         if (!turnTaken) {
-            if (hunger == 6) {
+            if (hunger == five) {
                 die();
             } else {
                 move();
@@ -76,13 +78,18 @@ public class Herbivore extends JPanel implements Inhabitant {
          */       
         Cell[][] cells = cell.getAdjacentCells();
         boolean moved = false;
+        int stuck = 0;
+        final int ten = 10;
+        
         while (!moved) {
             Point point = direction();
             int y1 = (int)point.getY();
             int x1 = (int)point.getX();
+            
             if (cells[y1][x1] != null 
                     && (cells[y1][x1].getInhabitant() instanceof Plant 
                             || (cells[y1][x1].getInhabitant() == null))) {
+                
                 if (cells[y1][x1].getInhabitant() instanceof Plant) {
                     eat();
                 }
@@ -91,7 +98,12 @@ public class Herbivore extends JPanel implements Inhabitant {
                 cells[y1][x1].setInhabitant(this);
                 cell = cells[y1][x1];  
                 moved = true;
+              //if it is surrounded by impassable objects or cannot 
+              //find a valid path after x tries, give up
+            } else if (stuck == ten) {  
+                moved = true;
             }
+            stuck++;
         }
     }
     
@@ -102,30 +114,39 @@ public class Herbivore extends JPanel implements Inhabitant {
         int direction;
         int y1 = 1;
         int x1 = 1;
+        final int two = 2;
+        final int ten = 10;
+        final int twenty = 20;
+        final int thirty = 30;
+        final int forty = 40;
+        final int fifty = 50;
+        final int sixty = 60;
+        final int seventy = 70;
+        final int eighty = 80;
         
         direction = RandomGenerator.nextNumber(79);
-        if (direction < 10) { //moves north
+        if (direction < ten) { //moves north
             y1 = 0;
             x1 = 1;
-        } else if (direction < 20) { //moves north east
+        } else if (direction < twenty) { //moves north east
             y1 = 0;
-            x1 = 2;
-        } else if (direction < 30) { //moves east
+            x1 = two;
+        } else if (direction < thirty) { //moves east
             y1 = 1;
-            x1 = 2;
-        } else if (direction < 40) { //moves south east
-            y1 = 2;
-            x1 = 2;
-        } else if (direction < 50) { //moves south
-            y1 = 2;
+            x1 = two;
+        } else if (direction < forty) { //moves south east
+            y1 = two;
+            x1 = two;
+        } else if (direction < fifty) { //moves south
+            y1 = two;
             x1 = 1;
-        } else if (direction < 60) { //moves south west
-            y1 = 2;
+        } else if (direction < sixty) { //moves south west
+            y1 = two;
             x1 = 0;
-        } else if (direction < 70) { //moves west
+        } else if (direction < seventy) { //moves west
             y1 = 1;
             x1 = 0;
-        } else if (direction < 80) { //moves north west
+        } else if (direction < eighty) { //moves north west
             y1 = 0;
             x1 = 0;
         }
