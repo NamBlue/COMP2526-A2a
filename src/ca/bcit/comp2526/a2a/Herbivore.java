@@ -2,6 +2,7 @@ package ca.bcit.comp2526.a2a;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 
 import javax.swing.JPanel;
 
@@ -36,25 +37,50 @@ public class Herbivore extends JPanel implements Inhabitant {
      * Puts the Herbivore on the specified cell.
      * @param cell the specified cell
      */
-    public void setCell(Cell cell) {
+    private void setCell(Cell cell) {
         cell.add(this);
     }
     
     /**
-     * Herbivore eats the Plant when on the same cell as the plant.
-     * Resets its hunger back to 0(full stomach).
+     * Herbivore takes its turn.
      */
-    public void move() {
+    public void takeTurn() {
+        move();
+        eat();
+    }
+    
+    /**
+     * Herbivore moves if space is unoccupied.
+     */
+    private void move() {
         /* Map of 2D array for reference in y,x index format
          * 00   01     02
          * 10   CELL   12
          * 20   21     22
          */
+        Point point = direction();
+        int y = (int)point.getY();
+        int x = (int)point.getX();
+        Cell[][] cells = cell.getAdjacentCells();
+        
+        if (cells[y][x] != null && (cells[y][x].getInhabitant() == null)) {
+            cell.removeInhabitant(this);
+            cells[y][x].removeInhabitant(cells[y][x].getInhabitant());
+            cells[y][x].setInhabitant(this);
+            cell = cells[y][x];
+        }
+    }
+    
+    /**
+     * Herbivore decides which direction to go before moving.
+     */
+    private Point direction() {
         int direction;
         int y = 1;
         int x = 1;
-        Cell[][] cells = cell.getAdjacentCells();
+        
         direction = RandomGenerator.nextNumber(79);
+        System.out.println(direction);
         if (direction < 10) { //moves north
             y = 0;
             x = 1;
@@ -80,19 +106,15 @@ public class Herbivore extends JPanel implements Inhabitant {
             y = 0;
             x = 0;
         }
-        if (cells[y][x] != null) {
-            cell.removeInhabitant(this);
-            cells[y][x].removeInhabitant(cells[y][x].getInhabitant());
-            cells[y][x].setInhabitant(this);
-            cell = cells[y][x];
-        }
+        Point point = new Point(x, y);
+        return point;
     }
     
     /**
      * Herbivore eats the Plant when on the same cell as the plant.
      * Resets its hunger back to 0(full stomach).
      */
-    public void eat() {
+    private void eat() {
         hunger = 0;
     }
     

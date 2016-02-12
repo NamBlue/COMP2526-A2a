@@ -62,7 +62,7 @@ public class Cell extends JPanel {
      */
     public void takeTurn() {
         if (inhabitant instanceof Herbivore) {
-            ((Herbivore)inhabitant).move();
+            ((Herbivore)inhabitant).takeTurn();
         }
     }
     
