@@ -11,6 +11,7 @@ public class World {
     private final int rows;
     private final int cols;
     private Cell[][] map;
+    private int time;
     
     /**
      * Constructor for objects of type World.
@@ -22,6 +23,8 @@ public class World {
         this.rows = rows;
         this.cols = cols;
         map = new Cell[rows][cols];
+        time = 0;
+        System.out.println("Dawn of Life! This is year " + time + " AD");
     }
     
     /**
@@ -54,7 +57,8 @@ public class World {
                 map[row][col].resetTurn();
             }
         }
-        System.out.println("takeTurn called");
+        time += 100;
+        System.out.println("This is year " + time + " AD");
     }
     
     /**
