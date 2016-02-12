@@ -37,7 +37,7 @@ public class World {
             for (int col = 0; col < cols; col++) {
                 map[row][col].init();
             }
-        }
+        }        
     }
     
     /**
@@ -47,9 +47,14 @@ public class World {
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 map[row][col].takeTurn();
-                map[row][col].getAdjacentCells();
             }
         }
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                map[row][col].resetTurn();
+            }
+        }
+        System.out.println("takeTurn called");
     }
     
     /**

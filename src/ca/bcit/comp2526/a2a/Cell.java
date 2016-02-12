@@ -122,6 +122,16 @@ public class Cell extends JPanel {
     }
     
     /**
+     * Resets the Inhabitants' turn so that they 
+     * are ready to take the next turn.
+     */
+    public void resetTurn() {
+        if (inhabitant instanceof Herbivore) {
+            ((Herbivore)inhabitant).resetTurn();
+        }
+    }
+    
+    /**
      * Support method for init, checks and stores
      * the Cells adjacent to the corner Cells.
      * @param rows the maximum rows in this world

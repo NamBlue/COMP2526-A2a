@@ -10,7 +10,7 @@ import javax.swing.JPanel;
  * @author Jia Qi Lee
  * @version 1.0
  */
-public class Plant extends JPanel implements Inhabitant{
+public class Plant extends JPanel implements Inhabitant {
     private Cell cell;
         
     /**

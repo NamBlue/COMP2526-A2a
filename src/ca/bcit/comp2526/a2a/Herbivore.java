@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 public class Herbivore extends JPanel implements Inhabitant {
     private Cell cell;
     private int hunger;
+    private boolean turnTaken;
     
     /**
      * Constructor for objects of type Herbivore.
@@ -24,6 +25,7 @@ public class Herbivore extends JPanel implements Inhabitant {
     public Herbivore(Cell location) {
         cell = location;
         hunger = 0;
+        turnTaken = false;
     }
     
     /**
@@ -45,8 +47,22 @@ public class Herbivore extends JPanel implements Inhabitant {
      * Herbivore takes its turn.
      */
     public void takeTurn() {
-        move();
-        eat();
+        if (!turnTaken) {
+            if (hunger == 6) {
+                die();
+            } else {
+                move();
+                hunger++; 
+            }
+            turnTaken = true;
+        }
+    }
+    
+    /**
+     * Herbivore is ready to take the next turn.
+     */
+    public void resetTurn() {
+        turnTaken = false;
     }
     
     /**
@@ -57,17 +73,25 @@ public class Herbivore extends JPanel implements Inhabitant {
          * 00   01     02
          * 10   CELL   12
          * 20   21     22
-         */
-        Point point = direction();
-        int y = (int)point.getY();
-        int x = (int)point.getX();
+         */       
         Cell[][] cells = cell.getAdjacentCells();
-        
-        if (cells[y][x] != null && (cells[y][x].getInhabitant() == null)) {
-            cell.removeInhabitant(this);
-            cells[y][x].removeInhabitant(cells[y][x].getInhabitant());
-            cells[y][x].setInhabitant(this);
-            cell = cells[y][x];
+        boolean moved = false;
+        while (!moved) {
+            Point point = direction();
+            int y1 = (int)point.getY();
+            int x1 = (int)point.getX();
+            if (cells[y1][x1] != null 
+                    && (cells[y1][x1].getInhabitant() instanceof Plant 
+                            || (cells[y1][x1].getInhabitant() == null))) {
+                if (cells[y1][x1].getInhabitant() instanceof Plant) {
+                    eat();
+                }
+                cell.removeInhabitant(this);
+                cells[y1][x1].removeInhabitant(cells[y1][x1].getInhabitant());
+                cells[y1][x1].setInhabitant(this);
+                cell = cells[y1][x1];  
+                moved = true;
+            }
         }
     }
     
@@ -76,37 +100,36 @@ public class Herbivore extends JPanel implements Inhabitant {
      */
     private Point direction() {
         int direction;
-        int y = 1;
-        int x = 1;
+        int y1 = 1;
+        int x1 = 1;
         
         direction = RandomGenerator.nextNumber(79);
-        System.out.println(direction);
         if (direction < 10) { //moves north
-            y = 0;
-            x = 1;
+            y1 = 0;
+            x1 = 1;
         } else if (direction < 20) { //moves north east
-            y = 0;
-            x = 2;
+            y1 = 0;
+            x1 = 2;
         } else if (direction < 30) { //moves east
-            y = 1;
-            x = 2;
+            y1 = 1;
+            x1 = 2;
         } else if (direction < 40) { //moves south east
-            y = 2;
-            x = 2;
+            y1 = 2;
+            x1 = 2;
         } else if (direction < 50) { //moves south
-            y = 2;
-            x = 1;
+            y1 = 2;
+            x1 = 1;
         } else if (direction < 60) { //moves south west
-            y = 2;
-            x = 0;
+            y1 = 2;
+            x1 = 0;
         } else if (direction < 70) { //moves west
-            y = 1;
-            x = 0;
+            y1 = 1;
+            x1 = 0;
         } else if (direction < 80) { //moves north west
-            y = 0;
-            x = 0;
+            y1 = 0;
+            x1 = 0;
         }
-        Point point = new Point(x, y);
+        Point point = new Point(x1, y1);
         return point;
     }
     
@@ -119,12 +142,12 @@ public class Herbivore extends JPanel implements Inhabitant {
     }
     
     /**
-     * Returns the hunger of the Herbivore.
-     * @return the hunger level of the Herbivore
+     * Herbivore dies.
      */
-    public int hungry() {
-        return hunger;
+    private void die() {
+        cell.removeInhabitant(this);
     }
+    
     
     /**
      * Draws the Herbivore.
