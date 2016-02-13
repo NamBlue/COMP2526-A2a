@@ -34,6 +34,13 @@ public class Plant extends JPanel implements Inhabitant {
     }
     
     /**
+     * Reserved for future implementation (reproduction growth etc). 
+     */
+    public void takeTurn() {
+        
+    }
+    
+    /**
      * Puts the plant on the specified cell.
      * @param cell the specified cell
      */

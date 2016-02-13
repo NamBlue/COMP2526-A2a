@@ -13,4 +13,9 @@ public interface Inhabitant {
      * Initializes the inhabitant in the universe.
      */
     public void init();
+    
+    /**
+     * Inhabitant moves forward in time.
+     */
+    public void takeTurn();
 }

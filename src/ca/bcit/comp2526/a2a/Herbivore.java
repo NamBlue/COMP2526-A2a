@@ -28,7 +28,7 @@ public class Herbivore extends JPanel implements Inhabitant {
                     "Parameter cannot be null");
         }
         cell = location;
-        hunger = 0;
+        hunger = 1;
         turnTaken = false;
     }
     
@@ -79,11 +79,6 @@ public class Herbivore extends JPanel implements Inhabitant {
      * Herbivore moves if space is unoccupied or moves to a Plant and eats.
      */
     private void move() {
-        /* Map of 2D array for reference in y,x index format
-         * 00   01     02
-         * 10   CELL   12
-         * 20   21     22
-         */       
         Cell[][] cells = cell.getAdjacentCells();
         boolean moved = false;
         int stuck = 0;
@@ -95,8 +90,8 @@ public class Herbivore extends JPanel implements Inhabitant {
             int x1 = (int)point.getX();
             
             if (cells[y1][x1] != null 
-                    && (cells[y1][x1].getInhabitant() instanceof Plant 
-                            || (cells[y1][x1].getInhabitant() == null))) {
+                    && (cells[y1][x1].getInhabitant() == null 
+                            || cells[y1][x1].getInhabitant() instanceof Plant)) {
                 
                 if (cells[y1][x1].getInhabitant() instanceof Plant) {
                     eat();
@@ -107,7 +102,7 @@ public class Herbivore extends JPanel implements Inhabitant {
                 cell = cells[y1][x1];  
                 moved = true;
               //if it is surrounded by impassable objects or cannot 
-              //find a valid path after x tries, give up
+              //find a valid path after ten tries, give up
             } else if (stuck == ten) {  
                 moved = true;
             }
@@ -117,6 +112,7 @@ public class Herbivore extends JPanel implements Inhabitant {
     
     /**
      * Herbivore decides which direction to go before moving.
+     * @return the Point direction decided
      */
     private Point direction() {
         int direction;
@@ -132,6 +128,11 @@ public class Herbivore extends JPanel implements Inhabitant {
         final int seventy = 70;
         final int eighty = 80;
         
+        /* Map of 2D array for reference in y,x index format
+         * 00   01     02
+         * 10   CELL   12
+         * 20   21     22
+         */
         direction = RandomGenerator.nextNumber(79);
         if (direction < ten) { //moves north
             y1 = 0;

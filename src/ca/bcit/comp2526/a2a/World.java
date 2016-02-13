@@ -148,7 +148,6 @@ public class World {
                     + "array passed must be size [3][3]");
         }
         
-        
         /* Map of 2D array for reference in y,x index format
          * 00   01     02
          * 10   CELL   12
@@ -184,7 +183,9 @@ public class World {
         final int two = 2;
         final int three = 3;
         
-        if (row < 0 || col < 0 || cell.length != three || cell[two].length != three) {
+        if (row < 0 || col < 0 
+                || cell.length != three || cell[two].length != three) {
+            
             throw new IllegalArgumentException(
                     "Parameters cannot be negative and cell "
                     + "array passed must be size [3][3]");
