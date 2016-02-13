@@ -23,6 +23,10 @@ public class Herbivore extends JPanel implements Inhabitant {
      * @param location the cell to initialize this Herbivore on
      */
     public Herbivore(Cell location) {
+        if (location == null) {
+            throw new IllegalArgumentException(
+                    "Parameter cannot be null");
+        }
         cell = location;
         hunger = 0;
         turnTaken = false;
@@ -40,6 +44,10 @@ public class Herbivore extends JPanel implements Inhabitant {
      * @param cell the specified cell
      */
     private void setCell(Cell cell) {
+        if (cell == null) {
+            throw new IllegalArgumentException(
+                    "Parameter cannot be null");
+        }
         cell.add(this);
     }
     
@@ -53,8 +61,8 @@ public class Herbivore extends JPanel implements Inhabitant {
             if (hunger == five) {
                 die();
             } else {
-                move();
                 hunger++; 
+                move();
             }
             turnTaken = true;
         }

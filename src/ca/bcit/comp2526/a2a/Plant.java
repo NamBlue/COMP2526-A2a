@@ -19,6 +19,10 @@ public class Plant extends JPanel implements Inhabitant {
      * @param location the cell to initialize this Plant on
      */
     public Plant(Cell location) {
+        if (location == null) {
+            throw new IllegalArgumentException(
+                    "Parameter cannot be null");
+        }
         cell = location;
     }
     
@@ -34,6 +38,10 @@ public class Plant extends JPanel implements Inhabitant {
      * @param cell the specified cell
      */
     public void setCell(Cell cell) {
+        if (cell == null) {
+            throw new IllegalArgumentException(
+                    "Parameter cannot be null");
+        }
         cell.add(this);
     }
     

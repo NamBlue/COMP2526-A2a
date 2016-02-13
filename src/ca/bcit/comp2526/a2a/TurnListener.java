@@ -18,6 +18,10 @@ public class TurnListener extends MouseAdapter{
      * @param frame the GameFrame to interact with.
      */
     public TurnListener(GameFrame frame) {
+        if (frame == null) {
+            throw new IllegalArgumentException(
+                    "Parameter cannot be null");
+        }
         gameframe = frame;
     }
     
