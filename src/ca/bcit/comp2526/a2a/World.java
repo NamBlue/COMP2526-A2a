@@ -238,7 +238,7 @@ public class World {
         if (row < 0 || col < 0 || cell.length != three || cell[two].length != three) {
             throw new IllegalArgumentException(
                     "Parameters cannot be negative and cell "
-                    + "array passed must be size [3][3]");
+                    + "array passed must be of size [3][3]");
         }
         
         if ((row > 0 && row < rows - 1) && (col > 0 && col < cols - 1)) {
