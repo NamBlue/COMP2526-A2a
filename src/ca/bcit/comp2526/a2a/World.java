@@ -28,7 +28,7 @@ public class World {
         this.rows = rows;
         this.cols = cols;
         map = new Cell[rows][cols];
-        time = 200;
+        time = 500;
         bc = true;
         System.out.println("Dawn of Life! This is year " 
                 + time + (bc ? " BC" : " AD"));
