@@ -12,6 +12,7 @@ public class World {
     private final int cols;
     private Cell[][] map;
     private int time; //Stores the amount of time(turns) that has passed for this world
+    private boolean bc; //True for year in BC, false for year in AD
     
     /**
      * Constructor for objects of type World.
@@ -27,8 +28,10 @@ public class World {
         this.rows = rows;
         this.cols = cols;
         map = new Cell[rows][cols];
-        time = 5000;
-        System.out.println("Dawn of Life! This is year " + time + " BC");
+        time = 200;
+        bc = true;
+        System.out.println("Dawn of Life! This is year " 
+                + time + (bc ? " BC" : " AD"));
     }
     
     /**
@@ -70,13 +73,16 @@ public class World {
     private void turnCount() {
         final int increment = 100;
         
-        if (time > 0) {
+        if (bc) {
             time -= increment;
-            System.out.println("This is year " + time + " BC");
-        } else {
-            time += increment;
-            System.out.println("This is year " + time + " AD");
-        }      
+            if (time == 0) {
+                bc = false;
+            }
+        } else if (!bc) {
+            time += increment; 
+        }
+        System.out.println("This is This is year " 
+                + time + (bc ? " BC" : " AD"));
     }
     
     /**
