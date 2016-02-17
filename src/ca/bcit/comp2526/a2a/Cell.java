@@ -85,8 +85,6 @@ public class Cell extends JPanel {
      */
     public void setInhabitant(Inhabitant object) {
         inhabitant = object;
-        add((JPanel)object);
-        repaint();
     }
     
     /**

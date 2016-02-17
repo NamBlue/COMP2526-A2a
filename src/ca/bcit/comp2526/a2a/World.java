@@ -1,6 +1,5 @@
 package ca.bcit.comp2526.a2a;
 
-import java.awt.Point;
 import java.util.ArrayList;
 
 /**
@@ -76,21 +75,25 @@ public class World {
      * Creates the Inhabitants into the World based on random probability.
      */
     private void spawn() {
+        Cell cell;
+        
         if (RandomGenerator.nextNumber(100) < 10) {
-            Point p = getRandomEmptyCell();
-            int x = (int)p.getX();
-            int y = (int)p.getY();
-            Herbivore herbivore = new Herbivore(map[y][x]);
-            map[y][x].setInhabitant(herbivore);
-            herbivore.revalidate();
+            cell = getRandomEmptyCell();
+            
+            if (cell != null) {
+                Herbivore herbivore = new Herbivore(cell);
+                herbivore.init();
+                herbivore.revalidate();
+            }
         }
-        if (RandomGenerator.nextNumber(100) < 30) {
-            Point p = getRandomEmptyCell();
-            int x = (int)p.getX();
-            int y = (int)p.getY();
-            Plant plant = new Plant(map[(int)p.getY()][(int)p.getX()]);
-            map[y][x].setInhabitant(plant);
-            plant.revalidate();
+        if (RandomGenerator.nextNumber(100) < 100) {
+            cell = getRandomEmptyCell();
+            
+            if (cell != null) {
+                Plant plant = new Plant(cell);
+                plant.init();
+                plant.revalidate();
+            }
         }    
     }
     
@@ -98,46 +101,52 @@ public class World {
      * Returns a random empty cell from all empty cells for the spawn method.
      * @return the random empty cell
      */
-    private Point getRandomEmptyCell() {
-        ArrayList<Point> pointlist;
-        Point location;
-        pointlist = getAllEmptyCells();
-        int seed = RandomGenerator.nextNumber(pointlist.size() - 1);
-        location = pointlist.get(seed);
+    private Cell getRandomEmptyCell() {
+        ArrayList<Cell> cellList = getAllEmptyCells();
+        Cell cell;
+        int seed;
         
-        return location;
+        if (cellList.size() == 0) {
+            return null;
+        } else {
+            seed = RandomGenerator.nextNumber(cellList.size() - 1);
+            cell = cellList.get(seed);
+            return cell;
+        }
     }
     
     /**
      * Returns all empty cells' (no Inhabitants) 
-     * location as a ArrayList of Points.
-     * @return the ArrayList of the Point location of cells that are empty
+     * location as a ArrayList of Cells.
+     * @return the ArrayList of the cells that are empty
      */
-    private ArrayList<Point> getAllEmptyCells() {
-        ArrayList<Point> pointlist = new ArrayList<Point>();
-            for (int row = 0; row < rows; row++) {
-                for (int col = 0; col < cols; col++) {
-                    if (map[row][col].getInhabitant() == null) {
-                        pointlist.add(map[row][col].getLocation());
-                    }
+    private ArrayList<Cell> getAllEmptyCells() {
+        ArrayList<Cell> cellList = new ArrayList<Cell>();
+        
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if (map[row][col].getInhabitant() == null) {
+                    cellList.add(map[row][col]);
                 }
             }
-        return pointlist;
+        }
+        return cellList;
     }
             
     /**
      * Counts the number of time passed in the World.
      */
     private void turnCount() {
-        final int increment = 100;
+        final int hundred = 100;
+        final int ten = 10;
         
         if (bc) {
-            time -= increment;
+            time -= hundred;
             if (time == 0) {
                 bc = false;
             }
         } else if (!bc) {
-            time += increment; 
+            time += ten; 
         }
         System.out.println("This is This is year " 
                 + time + (bc ? " BC" : " AD"));
@@ -218,21 +227,21 @@ public class World {
          * 20   21     22
          */
         if (row == 0 && col == 0) { //Top left
-            cell[1][two] = getCellAt(row, col + 1);
-            cell[two][two] = getCellAt(row + 1, col + 1);
-            cell[two][1] = getCellAt(row + 1, col);
+            cell[1][two] = map[row][col + 1];
+            cell[two][two] = map[row + 1][col + 1];
+            cell[two][1] = map[row + 1][col];
         } else if (row == 0 && col == cols - 1) { //Top right
-            cell[1][0] = getCellAt(row, col - 1);
-            cell[two][0] = getCellAt(row + 1, col - 1);
-            cell[two][1] = getCellAt(row + 1, col);
+            cell[1][0] = map[row][col - 1];
+            cell[two][0] = map[row + 1][col - 1];
+            cell[two][1] = map[row + 1][col];
         } else if (row == rows - 1 && col == 0) { //Bottom left
-            cell[0][1] = getCellAt(row - 1, col);
-            cell[0][two] = getCellAt(row - 1 , col + 1);
-            cell[1][two] = getCellAt(row, col + 1);
+            cell[0][1] = map[row - 1][col];
+            cell[0][two] = map[row - 1][col + 1];
+            cell[1][two] = map[row][col + 1];
         } else if (row == rows - 1 && col == cols - 1) { //Bottom right
-            cell[0][1] = getCellAt(row - 1, col);
-            cell[0][0] = getCellAt(row - 1 , col - 1);
-            cell[1][0] = getCellAt(row, col - 1);
+            cell[0][1] = map[row - 1][col];
+            cell[0][0] = map[row - 1][col - 1];
+            cell[1][0] = map[row][col - 1];
         }
     }
     
@@ -256,29 +265,29 @@ public class World {
         }
         
         if (row == 0 && (col > 0 && col < cols - 1)) { //Top side
-            cell[1][two] = getCellAt(row, col + 1);
-            cell[two][two] = getCellAt(row + 1, col + 1);
-            cell[two][1] = getCellAt(row + 1, col);
-            cell[two][0] = getCellAt(row + 1, col - 1);
-            cell[1][0] = getCellAt(row, col - 1);
+            cell[1][two] = map[row][col + 1];
+            cell[two][two] = map[row + 1][col + 1];
+            cell[two][1] = map[row + 1][col];
+            cell[two][0] = map[row + 1][col - 1];
+            cell[1][0] = map[row][col - 1];
         } else if ((row > 0 && row < rows - 1) && col == cols - 1) { //Right side
-            cell[0][1] = getCellAt(row - 1, col);
-            cell[two][1] = getCellAt(row + 1, col);
-            cell[two][0] = getCellAt(row + 1, col - 1);
-            cell[1][0] = getCellAt(row, col - 1);
-            cell[0][0] = getCellAt(row - 1, col - 1);
+            cell[0][1] = map[row - 1][col];
+            cell[two][1] = map[row + 1][col];
+            cell[two][0] = map[row + 1][col - 1];
+            cell[1][0] = map[row][col - 1];
+            cell[0][0] = map[row - 1][col - 1];
         } else if (row == rows - 1 && (col > 0 && col < cols - 1)) { //Bottom side
-            cell[0][1] = getCellAt(row - 1, col);
-            cell[0][two] = getCellAt(row - 1, col + 1);
-            cell[1][two] = getCellAt(row, col + 1);
-            cell[1][0] = getCellAt(row, col - 1);
-            cell[0][0] = getCellAt(row - 1, col - 1);
+            cell[0][1] = map[row - 1][col];
+            cell[0][two] = map[row - 1][col + 1];
+            cell[1][two] = map[row][col + 1];
+            cell[1][0] = map[row][col - 1];
+            cell[0][0] = map[row - 1][col - 1];
         } else if ((row > 0 && row < rows - 1) && col == 0) { //Left side
-            cell[0][1] = getCellAt(row - 1, col);
-            cell[0][two] = getCellAt(row - 1, col + 1);
-            cell[1][two] = getCellAt(row, col + 1);
-            cell[two][two] = getCellAt(row + 1, col + 1);
-            cell[two][1] = getCellAt(row + 1, col);
+            cell[0][1] = map[row - 1][col];
+            cell[0][two] = map[row - 1][col + 1];
+            cell[1][two] = map[row][col + 1];
+            cell[two][two] = map[row + 1][col + 1];
+            cell[two][1] = map[row + 1][col];
         }
     }
     
@@ -300,14 +309,14 @@ public class World {
         }
         
         if ((row > 0 && row < rows - 1) && (col > 0 && col < cols - 1)) {
-            cell[0][1] = getCellAt(row - 1, col);
-            cell[0][two] = getCellAt(row - 1, col + 1);
-            cell[1][two] = getCellAt(row, col + 1);
-            cell[two][two] = getCellAt(row + 1, col + 1);
-            cell[two][1] = getCellAt(row + 1, col);
-            cell[two][0] = getCellAt(row + 1, col - 1);
-            cell[1][0] = getCellAt(row, col - 1);
-            cell[0][0] = getCellAt(row - 1, col - 1);
+            cell[0][1] = map[row - 1][col];
+            cell[0][two] = map[row - 1][col + 1];
+            cell[1][two] = map[row][col + 1];
+            cell[two][two] = map[row + 1][col + 1];
+            cell[two][1] = map[row + 1][col];
+            cell[two][0] = map[row + 1][col - 1];
+            cell[1][0] = map[row][col - 1];
+            cell[0][0] = map[row - 1][col - 1];
         }
     }
 }

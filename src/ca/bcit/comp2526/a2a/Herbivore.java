@@ -36,16 +36,20 @@ public class Herbivore extends JPanel implements Inhabitant {
      * Initializes the Herbivore.
      */
     public void init() {
-        setCell();
-        repaint();
-        revalidate();
+        setCell(cell);
     }
     
     /**
      * Puts the Herbivore on the specified cell.
+     * @param cell the cell to set this Herbivore on
      */
-    private void setCell() {
+    private void setCell(Cell cell) {
+        if (cell == null) {
+            throw new IllegalArgumentException(
+                    "Parameter cannot be null");
+        }
         cell.setInhabitant(this);
+        cell.add(this);
     }
     
     /**
@@ -95,7 +99,7 @@ public class Herbivore extends JPanel implements Inhabitant {
                 }
                 cell.removeInhabitant(this);
                 cells[y1][x1].removeInhabitant(cells[y1][x1].getInhabitant());
-                cells[y1][x1].setInhabitant(this);
+                setCell(cells[y1][x1]);
                 cell = cells[y1][x1];  
                 moved = true;
               //if it is surrounded by impassable objects or cannot 
@@ -130,7 +134,7 @@ public class Herbivore extends JPanel implements Inhabitant {
          * 10   CELL   12
          * 20   21     22
          */
-        direction = RandomGenerator.nextNumber(79);
+        direction = RandomGenerator.nextNumber(80);
         if (direction < ten) { //moves north
             y1 = 0;
             x1 = 1;

@@ -41,14 +41,15 @@ public class Plant extends JPanel implements Inhabitant {
     }
     
     /**
-     * Puts the plant on the specified cell.
-     * @param cell the specified cell
+     * Puts the Plant on the specified cell.
+     * @param cell the cell to set this Plant on
      */
-    public void setCell(Cell cell) {
+    private void setCell(Cell cell) {
         if (cell == null) {
             throw new IllegalArgumentException(
                     "Parameter cannot be null");
         }
+        cell.setInhabitant(this);
         cell.add(this);
     }
     
