@@ -1,5 +1,8 @@
 package ca.bcit.comp2526.a2a;
 
+import java.awt.Point;
+import java.util.ArrayList;
+
 /**
  * The World built with Cells, does not wrap around the edges.
  * It is flat but nothing falls off the edge either.
@@ -28,7 +31,7 @@ public class World {
         this.rows = rows;
         this.cols = cols;
         map = new Cell[rows][cols];
-        time = 500;
+        time = 5000;
         bc = true;
         System.out.println("Dawn of Life! This is year " 
                 + time + (bc ? " BC" : " AD"));
@@ -52,6 +55,7 @@ public class World {
     
     /**
      * Advances time within the World by one turn.
+     * Calls the spawn method.
      */
     public void takeTurn() {
         for (int row = 0; row < rows; row++) {
@@ -64,9 +68,63 @@ public class World {
                 map[row][col].resetTurn();
             }
         }
+        spawn();
         turnCount();
     }
     
+    /**
+     * Creates the Inhabitants into the World based on random probability.
+     */
+    private void spawn() {
+        if (RandomGenerator.nextNumber(100) < 10) {
+            Point p = getRandomEmptyCell();
+            int x = (int)p.getX();
+            int y = (int)p.getY();
+            Herbivore herbivore = new Herbivore(map[y][x]);
+            map[y][x].setInhabitant(herbivore);
+            herbivore.revalidate();
+        }
+        if (RandomGenerator.nextNumber(100) < 30) {
+            Point p = getRandomEmptyCell();
+            int x = (int)p.getX();
+            int y = (int)p.getY();
+            Plant plant = new Plant(map[(int)p.getY()][(int)p.getX()]);
+            map[y][x].setInhabitant(plant);
+            plant.revalidate();
+        }    
+    }
+    
+    /**
+     * Returns a random empty cell from all empty cells for the spawn method.
+     * @return the random empty cell
+     */
+    private Point getRandomEmptyCell() {
+        ArrayList<Point> pointlist;
+        Point location;
+        pointlist = getAllEmptyCells();
+        int seed = RandomGenerator.nextNumber(pointlist.size() - 1);
+        location = pointlist.get(seed);
+        
+        return location;
+    }
+    
+    /**
+     * Returns all empty cells' (no Inhabitants) 
+     * location as a ArrayList of Points.
+     * @return the ArrayList of the Point location of cells that are empty
+     */
+    private ArrayList<Point> getAllEmptyCells() {
+        ArrayList<Point> pointlist = new ArrayList<Point>();
+            for (int row = 0; row < rows; row++) {
+                for (int col = 0; col < cols; col++) {
+                    if (map[row][col].getInhabitant() == null) {
+                        pointlist.add(map[row][col].getLocation());
+                    }
+                }
+            }
+        return pointlist;
+    }
+            
     /**
      * Counts the number of time passed in the World.
      */

@@ -36,19 +36,16 @@ public class Herbivore extends JPanel implements Inhabitant {
      * Initializes the Herbivore.
      */
     public void init() {
-        setCell(cell);
+        setCell();
+        repaint();
+        revalidate();
     }
     
     /**
      * Puts the Herbivore on the specified cell.
-     * @param cell the specified cell
      */
-    private void setCell(Cell cell) {
-        if (cell == null) {
-            throw new IllegalArgumentException(
-                    "Parameter cannot be null");
-        }
-        cell.add(this);
+    private void setCell() {
+        cell.setInhabitant(this);
     }
     
     /**
