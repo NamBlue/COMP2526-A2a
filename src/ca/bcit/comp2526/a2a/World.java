@@ -86,7 +86,7 @@ public class World {
                 herbivore.revalidate();
             }
         }
-        if (RandomGenerator.nextNumber(100) < 100) {
+        if (RandomGenerator.nextNumber(100) < 30) {
             cell = getRandomEmptyCell();
             
             if (cell != null) {

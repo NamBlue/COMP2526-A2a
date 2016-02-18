@@ -89,7 +89,7 @@ public class Herbivore extends JPanel implements Inhabitant {
             Point point = direction();
             int y1 = (int)point.getY();
             int x1 = (int)point.getX();
-            
+                       
             if (cells[y1][x1] != null 
                     && (cells[y1][x1].getInhabitant() == null 
                             || cells[y1][x1].getInhabitant() instanceof Plant)) {

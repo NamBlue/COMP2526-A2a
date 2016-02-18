@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Point;
+
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 /**
@@ -23,6 +25,7 @@ public class Cell extends JPanel {
     /**
      * Constructor for objects of type Cell.
      * 
+     * @param world the World this Cell is placed on
      * @param row the row position of the Cell
      * @param col the column position of the Cell
      */
@@ -38,6 +41,7 @@ public class Cell extends JPanel {
         this.col = col;
         cell = new Cell[three][three];
         setLayout(new GridLayout(1, 1));
+        setBorder(BorderFactory.createLineBorder(Color.black));
     }
     
     /**
@@ -45,9 +49,11 @@ public class Cell extends JPanel {
      * using the RandomGenerator class. Stores adjacent Cells from World.
      */
     public void init() {
-        int seed = RandomGenerator.nextNumber(100);
         final int ten = 10;
         final int forty = 40;
+        final int hundred = 100;
+        int seed = RandomGenerator.nextNumber(hundred);
+        
 
         if (seed < ten) {
             inhabitant = new Herbivore(this);
