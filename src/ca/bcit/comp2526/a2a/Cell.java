@@ -10,7 +10,8 @@ import javax.swing.JPanel;
 
 /**
  * The Cell. Represents a square space within a World. 
- * Can hold objects thats exists in the World.
+ * Can hold objects thats exists in the World. 
+ * Represented by a brown Cell.
  * 
  * @author Jia Qi Lee
  * @version 1.0

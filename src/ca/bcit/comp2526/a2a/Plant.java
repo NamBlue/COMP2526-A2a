@@ -16,7 +16,7 @@ public class Plant extends JPanel implements Inhabitant {
     /**
      * Constructor for objects of type Plant.
      * 
-     * @param location the cell to initialize this Plant on
+     * @param location the cell to instantiate this Plant on
      */
     public Plant(Cell location) {
         if (location == null) {

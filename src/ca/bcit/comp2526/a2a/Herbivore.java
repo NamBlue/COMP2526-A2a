@@ -20,7 +20,7 @@ public class Herbivore extends JPanel implements Inhabitant {
     /**
      * Constructor for objects of type Herbivore.
      * 
-     * @param location the cell to initialize this Herbivore on
+     * @param location the cell to instantiate this Herbivore on
      */
     public Herbivore(Cell location) {
         if (location == null) {

@@ -19,8 +19,8 @@ public class World {
     /**
      * Constructor for objects of type World.
      * 
-     * @param rows the amount of rows of the World
-     * @param cols the amount of columns of the World
+     * @param rows the amount of rows of Cells of the World
+     * @param cols the amount of columns of Cells of the World
      */
     public World(int rows, int cols) {
         if (rows <= 0 || cols <= 0) {
@@ -37,7 +37,7 @@ public class World {
     }
     
     /**
-     * Places the Cells on the World then initializes them.
+     * Instantiates the Cells on the World then initializes them.
      */
     public void init() {
         for (int row = 0; row < rows; row++) {
