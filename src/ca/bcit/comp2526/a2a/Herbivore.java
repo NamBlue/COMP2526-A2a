@@ -40,16 +40,30 @@ public class Herbivore extends JPanel implements Inhabitant {
     }
     
     /**
-     * Puts the Herbivore on the specified cell.
+     * Sets the Herbivore on the specified cell.
      * @param cell the cell to set this Herbivore on
      */
-    private void setCell(Cell cell) {
+    public void setCell(Cell cell) {
         if (cell == null) {
             throw new IllegalArgumentException(
                     "Parameter cannot be null");
         }
+        this.cell = cell;
         cell.setInhabitant(this);
         cell.add(this);
+    }
+    
+    /**
+     * Removes the Herbivore on the specified cell.
+     * @param cell the cell to remove this Herbivore from
+     */
+    public void removeCell(Cell cell) {
+        if (cell == null) {
+            throw new IllegalArgumentException(
+                    "Parameter cannot be null");
+        }
+        cell.removeInhabitant(this);
+        cell.remove(this);
     }
     
     /**
@@ -90,17 +104,15 @@ public class Herbivore extends JPanel implements Inhabitant {
             int y1 = (int)point.getY();
             int x1 = (int)point.getX();
                        
-            if (cells[y1][x1] != null 
-                    && (cells[y1][x1].getInhabitant() == null 
-                            || cells[y1][x1].getInhabitant() instanceof Plant)) {
+            if (cells[y1][x1] != null //cell exists 
+                    && (cells[y1][x1].getInhabitant() == null //cell is empty
+                            || cells[y1][x1].getInhabitant() instanceof Plant)) { //cell has a plant
                 
-                if (cells[y1][x1].getInhabitant() instanceof Plant) {
-                    eat();
+                if (cells[y1][x1].getInhabitant() instanceof Plant) { 
+                    eat(cells[y1][x1]);
                 }
-                cell.removeInhabitant(this);
-                cells[y1][x1].removeInhabitant(cells[y1][x1].getInhabitant());
+                removeCell(cell);
                 setCell(cells[y1][x1]);
-                cell = cells[y1][x1];  
                 moved = true;
               //if it is surrounded by impassable objects or cannot 
               //find a valid path after ten tries, give up
@@ -168,7 +180,8 @@ public class Herbivore extends JPanel implements Inhabitant {
      * Herbivore eats the Plant when on the same cell as the plant.
      * Resets its hunger back to 0(full stomach).
      */
-    private void eat() {
+    private void eat(Cell cell) {
+        cell.getInhabitant().removeCell(cell);
         hunger = 0;
     }
     
@@ -176,7 +189,7 @@ public class Herbivore extends JPanel implements Inhabitant {
      * Herbivore dies.
      */
     private void die() {
-        cell.removeInhabitant(this);
+        removeCell(cell);
     }
     
     

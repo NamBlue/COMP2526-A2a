@@ -90,7 +90,9 @@ public class Cell extends JPanel {
      * @param object the Inhabitant to set
      */
     public void setInhabitant(Inhabitant object) {
-        inhabitant = object;
+        if (inhabitant == null) {
+            inhabitant = object;
+        }   
     }
     
     /**
@@ -100,7 +102,6 @@ public class Cell extends JPanel {
     public void removeInhabitant(Inhabitant object) {
         if (inhabitant != null) {
             inhabitant = null;
-            remove((JPanel)object);
         }
     }
     

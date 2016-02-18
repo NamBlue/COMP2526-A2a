@@ -18,4 +18,16 @@ public interface Inhabitant {
      * Inhabitant moves forward in time.
      */
     public void takeTurn();
+    
+    /**
+     * Sets the Inhabitant on the specified cell.
+     * @param cell the cell to set this Inhabitant on
+     */
+    public void setCell(Cell cell);
+    
+    /**
+     * Removes the Inhabitant from the specified cell.
+     * @param cell the cell to remove this Inhabitant from
+     */
+    public void removeCell(Cell cell);
 }
