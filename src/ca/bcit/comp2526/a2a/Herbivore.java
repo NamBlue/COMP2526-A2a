@@ -104,18 +104,18 @@ public class Herbivore extends JPanel implements Inhabitant {
             int y1 = (int)point.getY();
             int x1 = (int)point.getX();
                        
-            if (cells[y1][x1] != null //cell exists 
-                    && (cells[y1][x1].getInhabitant() == null //cell is empty
-                            || cells[y1][x1].getInhabitant() instanceof Plant)) { //cell has a plant
-                
-                if (cells[y1][x1].getInhabitant() instanceof Plant) { 
-                    eat(cells[y1][x1]);
-                }
-                removeCell(cell);
-                setCell(cells[y1][x1]);
-                moved = true;
-              //if it is surrounded by impassable objects or cannot 
-              //find a valid path after ten tries, give up
+            if (cells[y1][x1] != null) {
+                Inhabitant inhabitant = cells[y1][x1].getInhabitant(); 
+                if (inhabitant == null || inhabitant instanceof Plant) {
+                    if (inhabitant instanceof Plant) { 
+                        eat(cells[y1][x1]);
+                    }
+                    removeCell(cell);
+                    setCell(cells[y1][x1]);
+                    moved = true;
+                } 
+            //if it is surrounded by impassable objects or cannot 
+            //find a valid path after ten tries, give up
             } else if (stuck == ten) {  
                 moved = true;
             }
@@ -179,6 +179,7 @@ public class Herbivore extends JPanel implements Inhabitant {
     /**
      * Herbivore eats the Plant when on the same cell as the plant.
      * Resets its hunger back to 0(full stomach).
+     * @param cell the cell with the plant to eat
      */
     private void eat(Cell cell) {
         cell.getInhabitant().removeCell(cell);
@@ -202,6 +203,6 @@ public class Herbivore extends JPanel implements Inhabitant {
         final int g = 255;
         final int b = 28;
         draw.setColor(new Color(r, g, b));
-        draw.fillRect(0, 0, getWidth() - 1 ,getHeight() - 1);
+        draw.fillRect(0, 0, getWidth(), getHeight());
     }
 }

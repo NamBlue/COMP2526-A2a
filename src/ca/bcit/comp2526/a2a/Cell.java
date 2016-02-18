@@ -85,7 +85,7 @@ public class Cell extends JPanel {
         final int g = 148;
         final int b = 137;
         draw.setColor(new Color(r, g, b));
-        draw.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
+        draw.fillRect(0, 0, getWidth(), getHeight());
     }
     
     /**

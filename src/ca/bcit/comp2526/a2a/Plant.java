@@ -76,6 +76,6 @@ public class Plant extends JPanel implements Inhabitant {
         final int g = 237;
         final int b = 12;
         draw.setColor(new Color(r, g, b));
-        draw.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
+        draw.fillRect(0, 0, getWidth(), getHeight());
     }
 }
