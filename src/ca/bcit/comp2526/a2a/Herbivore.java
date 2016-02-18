@@ -198,7 +198,10 @@ public class Herbivore extends JPanel implements Inhabitant {
      * @param draw device context for the Panel to draw on
      */
     public void paintComponent(Graphics draw) {
-        draw.setColor(Color.yellow);
+        final int r = 244;
+        final int g = 255;
+        final int b = 28;
+        draw.setColor(new Color(r, g, b));
         draw.fillRect(0, 0, getWidth() - 1 ,getHeight() - 1);
     }
 }

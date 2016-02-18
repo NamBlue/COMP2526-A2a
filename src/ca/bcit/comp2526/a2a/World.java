@@ -142,7 +142,7 @@ public class World {
         
         if (bc) {
             time -= hundred;
-            if (time == 0) {
+            if (time <= 0) {
                 bc = false;
             }
         } else if (!bc) {

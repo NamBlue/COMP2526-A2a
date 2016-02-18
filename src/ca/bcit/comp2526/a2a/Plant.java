@@ -72,7 +72,10 @@ public class Plant extends JPanel implements Inhabitant {
      * @param draw device context for the Panel to draw on
      */
     public void paintComponent(Graphics draw) {
-        draw.setColor(Color.green);
+        final int r = 19;
+        final int g = 237;
+        final int b = 12;
+        draw.setColor(new Color(r, g, b));
         draw.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
     }
 }

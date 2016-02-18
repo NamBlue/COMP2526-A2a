@@ -32,7 +32,7 @@ public class Cell extends JPanel {
     public Cell(World world, int row, int col) {
         if (row < 0 || col < 0 || world == null) {
             throw new IllegalArgumentException(
-                    "Parameters cannot be negative");
+                    "Parameters cannot be negative or null");
         }
         final int three = 3;
         
@@ -81,7 +81,10 @@ public class Cell extends JPanel {
      * @param draw device context for the Panel to draw on
      */
     public void paintComponent(Graphics draw) {
-        draw.setColor(Color.lightGray);
+        final int r = 179;
+        final int g = 148;
+        final int b = 137;
+        draw.setColor(new Color(r, g, b));
         draw.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
     }
     
